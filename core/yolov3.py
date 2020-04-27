@@ -151,7 +151,7 @@ def compute_loss(pred_bboxes, conv, label, gt_bboxes, i):
     conv_raw_prob = conv[..., 5:]
 
     pred_xywh = pred_bboxes[..., 0:4]
-    pred_conf = pred_bboxes[..., 4]
+    pred_conf = pred_bboxes[..., 4:5]
 
     label_xywh = label[..., 0:4]
     # # 特别注意：这里label_conf.shape = (batch_size, output_size, output_size, 3, 1)
