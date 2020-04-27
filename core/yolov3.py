@@ -167,6 +167,7 @@ def compute_loss(pred_bboxes, conv, label, gt_bboxes, i):
     # output_shape = (batch, output_size, output_size, anchor_per_scale, 1)
     giou = tf.expand_dims(bbox_giou(pred_xywh, label_xywh), axis=-1)  # shape = (batch, output_size, output_size, 3, 1)
     input_size = tf.cast(input_size, tf.float32)
+    # 体现了不同scale的边框损失的比例不同，大尺寸边框的损失 < 小尺寸边框
     bbox_loss_scale = 2.0 - 1.0 * label_xywh[..., 2] * label_xywh[..., 3] / (input_size ** 2)
     # # 有物体才计入损失
     giou_loss = label_conf * bbox_loss_scale * (1 - giou)
