@@ -159,10 +159,6 @@ def compute_loss(pred_bboxes, conv, label, gt_bboxes, i):
     label_conf = label[..., 4:5]
     label_prob = label[..., 5:]
 
-    """
-    高维数组做乘积还是有问题
-    到底要不要在最后加上第4维度？？ 只有label_的维度是4维才能解释
-    """
     # giou_loss
     # output_shape = (batch, output_size, output_size, anchor_per_scale, 1)
     giou = tf.expand_dims(bbox_giou(pred_xywh, label_xywh), axis=-1)  # shape = (batch, output_size, output_size, 3, 1)
