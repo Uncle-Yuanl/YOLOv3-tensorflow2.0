@@ -82,11 +82,13 @@ def image_preprocess(image, input_size, gt_bboxes = None):
 
     # 如果训练数据，有gt_bboxes，相应位置大小调整
     # x_min, y_min, x_max, y_max
-    if gt_bboxes:
+    if gt_bboxes is None:
+        return image_padded
+
+    else:
         gt_bboxes[..., [0, 2]] = gt_bboxes[..., [0, 2]] * scale + dw
         gt_bboxes[..., [1, 3]] = gt_bboxes[..., [1, 2]] * scale + dh
         return image_padded, gt_bboxes
-    return image_padded
 
 
 def postprocess_boxes(pred_bboxes, original_size, input_size, score_thresh):
