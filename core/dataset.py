@@ -246,7 +246,7 @@ class Dataset():
                     label[i][yind, xind, iou_mask, 5:] = smooth_onehot
 
                     bbox_ind = int(bbox_count[i] % self.max_bbox_per_scale)
-                    bboxes_xywh[bbox_ind, 0:4] = bbox_xywh
+                    bboxes_xywh[i][bbox_ind, 0:4] = bbox_xywh
                     bbox_count[i] += 1
 
                     exist_positive = True
@@ -266,7 +266,7 @@ class Dataset():
                 label[best_scale][yind, xind, best_anchor, 5:] = smooth_onehot
 
                 bbox_ind = int(bbox_count[best_scale] % self.max_bbox_per_scale)
-                bboxes_xywh[bbox_ind, 0:4] = bbox_xywh
+                bboxes_xywh[best_scale][bbox_ind, 0:4] = bbox_xywh
                 bbox_count[best_scale] += 1
         label_sbbox, label_mbbox, label_lbbox = label
         sbboxes, mbboxes, lbboxes = bboxes_xywh
