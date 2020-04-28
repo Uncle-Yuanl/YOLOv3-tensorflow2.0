@@ -31,7 +31,7 @@ for i, conv_bbox in enumerate(conv_bboxes):
     output_layers.append(pred_bbox)
 
 model = tf.keras.Model(inputs=input_layer, outputs=output_layers)
-optimizer = tf.optimizers.Adam
+optimizer = tf.keras.optimizers.Adam()
 if os.path.exists(logdir):
     shutil.rmtree(logdir)
 writer = tf.summary.create_file_writer(logdir)
@@ -49,9 +49,9 @@ def train_step(image, target):
         # optimizing process
         for i in range(3):
             conv, pred = output_layers[2*i], output_layers[2*i + 1]
-            # loss_items = compute_loss(pred, conv, *target[i], i)
+            # 给这个函数定义多个同类的形参，在使用时，带一个*号的在方法中会被存储为元组
             # https://blog.csdn.net/wangjvv/article/details/79703509
-            loss_items = compute_loss(pred, conv, target[i], i)
+            loss_items = compute_loss(pred, conv, *target[i], i)
             giou_loss += loss_items[0]
             conf_loss += loss_items[1]
             prob_loss += loss_items[2]
