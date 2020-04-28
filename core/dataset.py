@@ -43,7 +43,8 @@ class Dataset():
             raise KeyError("%s does not exist..." % image_path)
 
         image = cv2.imread(image_path)
-        bboxes = np.array(list(map(int, box.split(","))) for box in line[1:])
+        # 注意这里也有维度扩展的操作，不然在图像增强的代码中会出现too many indices for array
+        bboxes = np.array([list(map(int, box.split(","))) for box in line[1:]])
 
         if self.data_aug:
             image, bboxes = self.random_horizontal_flip(np.copy(image), np.copy(bboxes))
@@ -141,6 +142,7 @@ class Dataset():
         因为是迭代器，所以__next__函数中只需要写一个batch的生成代码
         """
         with tf.device('/cpu:0'):
+            # 如果用random.choice，则需要list
             self.train_input_size = random.choice(self.train_input_size)
             self.train_output_size = self.train_input_size // self.strides
 
@@ -205,7 +207,7 @@ class Dataset():
         # 通过true_bboxes和anchors的iou，将true_bboxes标记为对应的scale的label和bboxes_xywh
         for bbox in bboxes:
             bbox_coor = bbox[:4]
-            bbox_class_id = bbox[5]
+            bbox_class_id = bbox[4]
 
             onehot = np.zeros(self.num_classes, dtype=np.float)
             onehot[bbox_class_id] = 1.0
