@@ -22,7 +22,7 @@ total_steps = cfg.TRAIN.EPOCHS * steps_per_epoch
 定义模型，optimizer和数据写入
 """
 input_size = 416
-input_layer = tf.keras.Input(shanpe=[input_size, input_size, 3])
+input_layer = tf.keras.Input(shape=[input_size, input_size, 3])
 conv_bboxes = YOLOv3(input_layer)
 output_layers = []
 for i, conv_bbox in enumerate(conv_bboxes):
